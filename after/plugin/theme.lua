@@ -1,5 +1,10 @@
-vim.o.background = "dark"
-require("gruvbox").setup({
-	italic = false,
+--vim.o.background = "dark"
+
+require("github-theme").setup({
+    keyword_style = "bold",
+
 })
-vim.cmd([[colorscheme gruvbox]])
+--require("gruvbox").setup({
+	--italic = false,
+--})
+--vim.cmd([[colorscheme gruvbox]])
