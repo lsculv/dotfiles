@@ -4,15 +4,23 @@
 -- vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function(use)
+    -- Packer
     use 'wbthomason/packer.nvim'
 
+    -- Telescope
     use {
         'nvim-telescope/telescope.nvim', tag = '0.1.1',
         requires = { {'nvim-lua/plenary.nvim'} }
     }
+
+    -- Color Themes
     use { "ellisonleao/gruvbox.nvim" }
     use ({ 'projekt0n/github-nvim-theme', tag = 'v0.0.7' })
+
+    -- Tresitter
     use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
+
+    -- LSP-Zero
     use {
         'VonHeikemen/lsp-zero.nvim',
         branch = 'v1.x',
@@ -35,8 +43,15 @@ return require('packer').startup(function(use)
             {'rafamadriz/friendly-snippets'}, -- Optional
         }
     }
+
+    -- Auto Pairs
     use {
-        "windwp/nvim-autopairs",
+        'windwp/nvim-autopairs',
         config = function() require("nvim-autopairs").setup {} end
     }
+
+    --Git Tools
+    use 'tpope/vim-fugitive'
+
 end)
+
