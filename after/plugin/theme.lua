@@ -2,6 +2,7 @@
 
 require("github-theme").setup({
     keyword_style = "bold",
+    comment_style = "none",
 
 })
 --require("gruvbox").setup({
