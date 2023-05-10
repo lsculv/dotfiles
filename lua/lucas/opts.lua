@@ -20,6 +20,10 @@ vim.opt.colorcolumn = "80"
 
 vim.opt.updatetime = 50
 
+vim.opt.showmode = false
+
+vim.highlight.on_yank = true
+
 -- Configurations for colorschemes that don't support the 0.9 semantic highlights
 --local links = {
 --  ['@lsp.type.namespace'] = '@namespace',

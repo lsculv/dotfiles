@@ -50,8 +50,11 @@ return require('packer').startup(function(use)
         config = function() require("nvim-autopairs").setup {} end
     }
 
-    --Git Tools
+    -- Git Tools
     use 'tpope/vim-fugitive'
+
+    -- Statusline
+    use 'itchyny/lightline.vim'
 
 end)
 

@@ -5,6 +5,7 @@ require("github-theme").setup({
     comment_style = "none",
 
 })
+
 --require("gruvbox").setup({
 	--italic = false,
 --})
