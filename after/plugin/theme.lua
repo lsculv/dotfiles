@@ -6,6 +6,9 @@ require("github-theme").setup({
 
 })
 
+vim.g.lightline = { colorscheme = "deus" }
+
+
 --require("gruvbox").setup({
 	--italic = false,
 --})

@@ -1,5 +1,3 @@
-vim.opt.guicursor = ""
-
 vim.opt.nu = true
 vim.opt.relativenumber = true
 
@@ -22,7 +20,6 @@ vim.opt.updatetime = 50
 
 vim.opt.showmode = false
 
-vim.highlight.on_yank = true
 
 -- Configurations for colorschemes that don't support the 0.9 semantic highlights
 --local links = {
