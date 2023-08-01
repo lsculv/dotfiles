@@ -8,10 +8,10 @@ lsp.ensure_installed({
 })
 
 lsp.on_attach(function(client, buff)
-	local opts = { buffer = buff, remap = false}
-
-	vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
-	vim.keymap.set("n", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+    local opts = { buffer = buff, remap = false}
+    vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
+    vim.keymap.set("n", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+    vim.keymap.set("n", "<leader>fm", function() vim.lsp.buf.format() end, opts)
     client.server_capabilities.semanticTokensProvider = nil
 end)
 
