@@ -12,6 +12,7 @@ lsp.on_attach(function(client, buff)
     vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
     vim.keymap.set("n", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
     vim.keymap.set("n", "<leader>fm", function() vim.lsp.buf.format() end, opts)
+    vim.keymap.set("n", "<leader>ee", function() vim.diagnostic.setqflist() end, opts)
     client.server_capabilities.semanticTokensProvider = nil
 end)
 
