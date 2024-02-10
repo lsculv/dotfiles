@@ -3,7 +3,9 @@ vim.o.background = "dark"
 vim.g.lightline = { colorscheme = 'rosepine_moon' }
 
 require('rose-pine').setup({
-    disable_italics = true,
+    styles = {
+        italic = false
+    }
 })
 
 vim.cmd('colorscheme rose-pine-moon')
