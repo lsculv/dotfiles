@@ -104,6 +104,8 @@ local plugins = {
             local configs = require('nvim-treesitter.configs')
             configs.setup({
                 ensure_installed = { 'c', 'lua', 'vim', 'vimdoc', 'python', 'rust' },
+                ignore_install = {},
+                auto_install = false,
                 sync_install = false,
                 highlight = { enable = true },
                 indent = { enable = true },
@@ -237,7 +239,7 @@ local plugins = {
             formatters_by_ft = {
                 -- This is broken right now and inserts a bunch of
                 -- ^I indention characters.
-                -- lua = { 'stylua' },
+                lua = { 'stylua' },
                 python = { 'ruff_format' },
             },
         },
