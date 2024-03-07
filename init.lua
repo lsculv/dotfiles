@@ -1,5 +1,5 @@
 -- Aesthetic options
-vim.o.background = 'dark'
+vim.opt.background = 'dark'
 vim.opt.termguicolors = true
 
 -- Leader and remaps
@@ -55,8 +55,7 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Spell checking
 vim.opt.spell = true
-vim.cmd('autocmd FileType markdown setlocal spell')
-vim.cmd('autocmd FileType gitcommit setlocal spell')
+vim.cmd('autocmd FileType man setlocal nospell')
 
 -- Enable text highlight on yank
 vim.api.nvim_create_autocmd('TextYankPost', {
