@@ -55,10 +55,24 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Spell checking
 vim.opt.spell = true
-vim.cmd('autocmd FileType man setlocal nospell')
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = 'man',
+    desc = 'Do not spell check man pages',
+    group = vim.api.nvim_create_augroup('spell-check', { clear = true }),
+    callback = function()
+        vim.opt_local.spell = false
+    end,
+})
 
--- Wrap quick fix list entries
-vim.cmd('autocmd FileType qf setlocal wrap')
+-- Quick fix list
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = 'qf',
+    desc = 'Wrap quick fix list entries',
+    group = vim.api.nvim_create_augroup('quick-fix-list', { clear = true }),
+    callback = function()
+        vim.opt_local.wrap = true
+    end,
+})
 
 -- Enable text highlight on yank
 vim.api.nvim_create_autocmd('TextYankPost', {
@@ -109,6 +123,7 @@ local plugins = {
                 ignore_install = {},
                 auto_install = false,
                 sync_install = false,
+                modules = {},
                 highlight = { enable = true },
                 indent = { enable = true },
             })
