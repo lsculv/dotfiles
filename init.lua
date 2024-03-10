@@ -57,6 +57,9 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.opt.spell = true
 vim.cmd('autocmd FileType man setlocal nospell')
 
+-- Wrap quick fix list entries
+vim.cmd('autocmd FileType qf setlocal wrap')
+
 -- Enable text highlight on yank
 vim.api.nvim_create_autocmd('TextYankPost', {
     desc = 'Highlight on yank',
