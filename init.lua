@@ -22,6 +22,16 @@ vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = 'gleam',
+    desc = 'Use two space indents for gleam',
+    group = vim.api.nvim_create_augroup('indents', { clear = true }),
+    callback = function()
+        vim.opt_local.tabstop = 2
+        vim.opt_local.softtabstop = 2
+        vim.opt_local.shiftwidth = 2
+    end,
+})
 
 -- Scrolling
 vim.opt.scrolloff = 8
