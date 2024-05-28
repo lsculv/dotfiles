@@ -53,7 +53,7 @@ vim.opt.signcolumn = 'yes'
 
 -- White space handling
 vim.opt.list = true
-vim.opt.listchars = { trail = '·', nbsp = '␣' }
+vim.opt.listchars = { trail = '·', nbsp = '␣', tab = '» ' }
 
 -- In-buffer searching
 vim.opt.ignorecase = true
@@ -71,6 +71,16 @@ vim.api.nvim_create_autocmd('FileType', {
     group = vim.api.nvim_create_augroup('spell-check', { clear = true }),
     callback = function()
         vim.opt_local.spell = false
+    end,
+})
+
+-- Better options for writing prose
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = 'markdown',
+    desc = 'Make sure text auto inserts line breaks',
+    group = vim.api.nvim_create_augroup('prose', { clear = true }),
+    callback = function()
+        vim.opt_local.textwidth = 80
     end,
 })
 
@@ -137,6 +147,26 @@ local plugins = {
                 highlight = { enable = true },
                 indent = { enable = true },
             })
+            -- make .roc files have the correct filetype
+            vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter' }, {
+                pattern = { '*.roc' },
+                callback = function()
+                    vim.opt_local.filetype = 'roc'
+                    vim.opt_local.commentstring = '# %s'
+                end,
+            })
+
+            -- add roc tree-sitter
+            --@class
+            local parsers = require('nvim-treesitter.parsers').get_parser_configs()
+
+            --@class
+            parsers.roc = {
+                install_info = {
+                    url = 'https://github.com/faldor20/tree-sitter-roc',
+                    files = { 'src/parser.c', 'src/scanner.c' },
+                },
+            }
         end,
     },
     -- LSP setup
