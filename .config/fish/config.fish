@@ -56,12 +56,6 @@ if status is-interactive
         cd (fd --type d --exclude go . "$directory" -H | fzf --scheme=path --bind tab:up,btab:down || printf "$last")
     end
 
-    # note Configurations
-    export NOTE_HOME="/home/lucas/Notes"
-
-    # Backups
-    alias backup="rsync -a --info=progress2 --exclude=\".cache\" /home/lucas/ /run/media/lucas/Fedora\ Backup/"
-
     # Reboot to Windows
     function windows-reboot
         set windows_entry $(sudo grep -i windows /etc/grub2.cfg | cut -d "'" -f 2)
