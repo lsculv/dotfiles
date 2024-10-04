@@ -1,0 +1,39 @@
+# vim: filetype=muttrc
+
+set editor = "nvim"
+set my_name = "Lucas Culverhouse"
+set imap_check_subscribed
+
+auto_view text/html text/calendar applications/ics # automatically view html
+alternative_order text/html text/plain text/enriched text/*
+
+set envelope_from
+set edit_headers                     # show headers when composing
+set fast_reply                       # skip to compose when replying
+set askcc                            # ask for CC:
+set fcc_attach                       # save attachments with the body
+set forward_format = "Fwd: %s"       # format of subject when forwarding
+set forward_decode                   # decode when forwarding
+set attribution = "On %d, %n wrote:" # format of quoting header
+set reply_to                         # reply to Reply to: field
+set reverse_name                     # reply as whomever it was to
+set include                          # include message in replies
+set forward_quote                    # include message in forwards
+set text_flowed
+set status_on_top
+unset sig_dashes                     # no dashes before sig
+unset mime_forward                   # forward attachments as part of body
+set tmpdir = /tmp/neomutt            # where to keep temp files
+
+set pipe_decode     # strip headers and decode MIMEs when piping
+set thorough_search # strip headers and decode MIMEs when searching
+
+set sort = threads
+set sort_browser = date
+set sort_aux = reverse-last-date-received
+set send_charset = "utf8:iso-8859-1:us-ascii"
+set charset = "utf-8"
+
+set mailcap_path = "~/.config/neomutt/mailcap"
+set header_cache = "~/.cache/mutt"
+set message_cachedir = "~/.cache/mutt"

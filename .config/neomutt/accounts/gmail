@@ -1,0 +1,28 @@
+# vim: filetype=muttrc
+
+set realname = "Lucas Culverhouse"
+set from = "lucasculverhouse@gmail.com"
+set use_from = "yes"
+
+set imap_user = "lucasculverhouse@gmail.com"
+set imap_pass = "`/usr/bin/pass lucasculverhouse@gmail.com`"
+set smtp_url = "smtps://lucasculverhouse@smtp.gmail.com:465/"
+set smtp_pass = "`/usr/bin/pass lucasculverhouse@gmail.com`"
+set smtp_authenticators = "gssapi:login"
+
+set folder = "imaps://imap.gmail.com:993/"
+set spoolfile = "+INBOX"
+set record = "+[Gmail]/Sent Mail"
+set postponed = "+[Gmail]/Drafts"
+
+# mailboxes =INBOX =[Gmail]/Sent\ Mail =[Gmail]/Drafts =[Gmail]/Spam =[Gmail]/Trash
+
+set imap_keepalive = 300
+
+set crypt_use_gpgme=yes
+set postpone_encrypt = yes
+set pgp_self_encrypt = yes
+set crypt_autosign = yes
+set crypt_protected_headers_write = yes
+set crypt_autopgp = yes
+set pgp_sign_as = 0xA6CF032E37017F40

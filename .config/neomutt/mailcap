@@ -1,0 +1,11 @@
+# HTML
+text/html; w3m -I %{charset} -T text/html; copiousoutput;
+# text/html; ~/.config/neomutt/mutt-html-jail/target/debug/mutt-html-jail %s; copiousoutput;
+text/plain; nvim %s
+
+# PDF
+application/pdf; /usr/bin/evince %s
+
+# Images
+image/png; /usr/bin/loupe %s
+image/jpeg; /usr/bin/loupe %s
