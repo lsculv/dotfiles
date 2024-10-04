@@ -289,15 +289,24 @@ local plugins = {
         'stevearc/conform.nvim',
         opts = {
             notify_on_error = false,
-            format_on_save = {
-                timeout_ms = 500,
-                lsp_fallback = true,
-            },
+            format_on_save = function()
+                local filetype = vim.bo.filetype
+                -- ZLS does its own format on save that leads to a deadlock
+                -- when combined with the conform.nvim format on save, so conform
+                -- is disabled for all zig files.
+                if filetype == 'zig' then
+                    return nil
+                end
+                return {
+                    timeout_ms = 500,
+                    lsp_fallback = true,
+                }
+            end,
             formatters_by_ft = {
-                -- This is broken right now and inserts a bunch of
-                -- ^I indention characters.
                 lua = { 'stylua' },
                 python = { 'ruff_format' },
+                javascript = { 'prettier' },
+                zig = nil,
             },
         },
     },
