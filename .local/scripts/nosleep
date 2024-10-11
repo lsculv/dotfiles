@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+dbus_reply=$(dbus-send --print-reply=literal --dest=org.gnome.SessionManager /org/gnome/SessionManager org.gnome.SessionManager.GetInhibitors | tail --lines +2 | tr -d ']')
+read -r -a inhibitors <<< "$dbus_reply"
+if [ "${#inhibitors[@]}" -eq 0 ]; then
+    exit 1
+fi
+# `dbus-send` prints everything with a tab before the output and no final newline,
+# so its fine to just ask it to print multiple times and then print our own newline.
+for inhibitor in "${inhibitors[@]}"; do
+    dbus-send --print-reply=literal --dest=org.gnome.SessionManager "$inhibitor" org.gnome.SessionManager.Inhibitor.GetAppId
+done
+printf '\n'

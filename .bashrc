@@ -12,7 +12,7 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_STATE_HOME="$HOME/.local/state"
 export XDG_CACHE_HOME="$HOME/.cache"
 
-PATH="/home/lucas/bin:$XDG_DATA_HOME/cargo/bin:/home/lucas/.local/bin:/home/lucas/.pyenv/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/usr/sbin"
+PATH="/home/lucas/bin:$XDG_DATA_HOME/cargo/bin:/home/lucas/.local/bin:/home/lucas/.pyenv/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/usr/sbin:/home/lucas/.local/scripts"
 
 if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
 then

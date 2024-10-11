@@ -1,0 +1,174 @@
+#!/usr/bin/env python3
+
+import argparse
+import hashlib
+import json
+import logging
+import os
+import pathlib
+import shutil
+import subprocess
+import sys
+import tarfile
+import urllib.request
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="[%(asctime)s] %(levelname)s: %(message)s",
+    handlers=[logging.StreamHandler(stream=sys.stdout)],
+)
+logger = logging.getLogger()
+
+
+def yes_or_no(prompt: str) -> bool:
+    while True:
+        resp = input(prompt).strip().lower()
+        if resp.startswith("y"):
+            return True
+        elif resp.startswith("n"):
+            return False
+        else:
+            print("Please enter 'yes' or 'no'")
+
+
+def get_installed_version(bin_name: str) -> str | None:
+    try:
+        proc = subprocess.run([bin_name, "version"], capture_output=True, check=True)
+        return proc.stdout.decode("utf-8").rstrip("\n")
+    except FileNotFoundError:
+        return None
+
+
+def parse_args() -> argparse.Namespace:
+    home = pathlib.Path.home()
+    parser = argparse.ArgumentParser(
+        prog=__file__,
+        description="Fetch the latest master branch tarball from ziglang.org",
+    )
+    parser.add_argument(
+        "--bin-name",
+        default="zig-nightly",
+        help="The binary name of the installed Zig version",
+    )
+    parser.add_argument(
+        "--install-dir",
+        default=os.path.join(home, ".local", "share"),
+        help="The directory where Zig installation will be located,\
+        this is not the same as the binary location, which is a separate symlink",
+    )
+    parser.add_argument(
+        "--bin-dir",
+        default=os.path.join(home, ".local", "bin"),
+        help="The directory where the installed binary will be located",
+    )
+    parser.add_argument(
+        "-f",
+        "--force",
+        action="store_true",
+        help="Do not skip reinstalling when the current installed version is already up-to-date",
+    )
+
+    args = parser.parse_args(sys.argv[1:])
+    return args
+
+
+def main() -> int:
+    args = parse_args()
+    install_dir = args.install_dir
+    bin_dir = args.bin_dir
+    bin_name = args.bin_name
+
+    # Check if the current Zig version is actually out-of-date _before_ attempting
+    # to install a new version
+    logger.info("Fetching version manifest")
+    with urllib.request.urlopen("https://ziglang.org/download/index.json") as f:
+        version_manifest = json.load(f)
+        version = version_manifest["master"]["version"]
+
+        logger.info("Checking if current installed version is up-to-date")
+        installed_version = get_installed_version(bin_name)
+        if (
+            installed_version is not None
+            and version == installed_version
+            and not args.force
+        ):
+            logger.warning(
+                f"Installed Zig version `{installed_version}` is already up-to-date!"
+            )
+            return 0
+
+        if installed_version is not None:
+            logger.info(f"Installed Zig version `{installed_version}` out-of-date")
+        else:
+            logger.info("No installed Zig nightly version detected")
+        tarball_url = version_manifest["master"]["x86_64-linux"]["tarball"]
+        shasum = version_manifest["master"]["x86_64-linux"]["shasum"]
+
+    # Fetch the tarball and verify it with the checksum in the manifest
+    logger.info(f"Fetching latest version `{version}`")
+    tarball_file, _ = urllib.request.urlretrieve(tarball_url)
+    try:
+        with open(tarball_file, "rb") as f:
+            logger.info("Verifying checksum")
+            sha256hash = hashlib.sha256(f.read()).hexdigest()
+
+            if sha256hash != shasum:
+                logger.error(
+                    f"""\
+                    Checksums did not match!
+                    Found   : {sha256hash}
+                    Expected: {shasum}
+                    """
+                )
+        # Extract the contents of the tarball
+        logger.info("Installing new Zig version")
+        with tarfile.open(tarball_file, "r") as f:
+            # The name of the directory that contains the Zig binary _should_ be
+            # the name of the first tar archive member.
+            extracted_name = f.getnames()[0]
+            if not extracted_name.startswith("zig-linux-x86_64"):
+                logger.error(
+                    "Invalid tarball contents: expected root Zig install name to be first archive member"
+                )
+            f.extractall(install_dir, filter="data")
+        installed_name = os.path.join(install_dir, extracted_name)
+        bin_name = os.path.join(bin_dir, bin_name)
+        # Check if the symlink to the binary already exists so it can be removed,
+        # otherwise creating the symlink below will fail
+        if os.path.lexists(bin_name):
+            os.remove(bin_name)
+        os.symlink(os.path.join(installed_name, "zig"), bin_name)
+
+        logger.info(f"New Zig version successfully installed at `{installed_name}`")
+    finally:
+        os.remove(tarball_file)
+
+    # Check for old versions and remove them, prompting the user
+    yes = yes_or_no("Would you like to scan for old versions and remove them? (y/n): ")
+    if yes:
+        installed_file = pathlib.Path(installed_name)
+        found_file_to_remove = False
+        for file in pathlib.Path(install_dir).iterdir():
+            if (
+                file.name.startswith("zig-linux-x86_64")
+                and file != installed_file
+                and file.is_dir()
+            ):
+                found_file_to_remove = True
+                yes = yes_or_no(f"Remove {file.name}? (y/n): ")
+                if yes:
+                    logger.info(f"Removing {file.name}")
+                    shutil.rmtree(file)
+                else:
+                    logger.info(f"Skipping {file.name}")
+        if not found_file_to_remove:
+            logger.info("No old versions found")
+    else:
+        logger.info("Keeping old versions")
+
+    return 0
+
+
+if __name__ == "__main__":
+    exit_code = main()
+    sys.exit(exit_code)
