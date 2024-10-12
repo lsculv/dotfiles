@@ -12,16 +12,10 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_STATE_HOME="$HOME/.local/state"
 export XDG_CACHE_HOME="$HOME/.cache"
 
-PATH="/home/lucas/bin:/home/lucas/.local/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/usr/sbin"
+PATH="$HOME/bin:$HOME/.local/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/usr/sbin"
 PATH="$XDG_DATA_HOME/cargo/bin:$PATH"
-PATH="/home/lucas/.pyenv/bin:$PATH"
-PATH="/home/lucas/.local/scripts:$PATH"
-
-if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
-then
-    PATH="$HOME/.local/bin:$HOME/bin:$PATH"
-fi
-export PATH
+PATH="$HOME/.pyenv/bin:$PATH"
+PATH="$HOME/.local/scripts:$PATH"
 
 # Settings for a cleaner $HOME dir
 export HISTFILE="$XDG_STATE_HOME"/bash/history
