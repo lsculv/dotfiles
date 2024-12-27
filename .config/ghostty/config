@@ -1,0 +1,9 @@
+font-family = UbuntuMono Nerd Font
+font-size = 15
+
+theme = rose-pine-moon
+
+shell-integration-features = no-cursor
+cursor-style = block
+
+command = /usr/bin/fish
