@@ -1,7 +1,7 @@
 font-family = UbuntuMono Nerd Font
 font-size = 15
 
-theme = rose-pine-moon
+theme = custom
 
 shell-integration-features = no-cursor
 cursor-style = block
