@@ -1,7 +1,7 @@
 # My Public Dotfiles
-These are my public dotfiles, convienitly in their own git repo for easy copying
-to new machines. Any relevant docs can be found in the `.github/docs/`
-directory, along with a copy of the BSD 3-Clause licese at `.github/LICENSE`.
+These are my public dotfiles, conveniently in their own git repo for easy copying
+to new machines. Any relevant docs can be found in the `.docs/`
+directory, along with a copy of the BSD 3-Clause license at `.docs/LICENSE`.
 
 ## Setup
 
