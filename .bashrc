@@ -15,7 +15,6 @@ export XDG_CACHE_HOME="$HOME/.cache"
 PATH="$HOME/bin:$HOME/.local/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/usr/sbin"
 PATH="$XDG_DATA_HOME/cargo/bin:$PATH"
 PATH="$HOME/.pyenv/bin:$PATH"
-PATH="$HOME/.local/scripts:$PATH"
 
 # Settings for a cleaner $HOME dir
 export HISTFILE="$XDG_STATE_HOME"/bash/history
