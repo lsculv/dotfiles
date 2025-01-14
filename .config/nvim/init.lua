@@ -5,6 +5,7 @@ vim.opt.termguicolors = true
 -- Leader and remaps
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+vim.keymap.set('n', 'U', '<C-r>')
 vim.keymap.set('n', '<leader>jq', vim.cmd.Ex)
 vim.keymap.set('n', '<leader><leader>', '<C-^>')
 vim.keymap.set('n', '<leader>m', vim.cmd.Man)
