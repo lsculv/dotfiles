@@ -1,0 +1,51 @@
+# Primary
+[user]
+    name = Lucas Culverhouse
+    email = lucasculverhouse@gmail.com
+    signingkey = 5CB97CB70A09417C
+[alias]
+    graph = log --color --graph \
+        --abbrev-commit --branches \
+        --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+[help]
+    autocorrect = prompt
+
+# Command Specific
+[init]
+    defaultBranch = main
+[commit]
+    gpgsign = true
+    verbose = true
+[push]
+    autoSetupRemote = true
+    followTags = true
+[merge]
+    conflictstyle = zdiff3
+[rebase]
+    updateRefs = true
+[branch]
+    sort = -committerdate
+[tag]
+    sort = version:refname
+[log]
+    date = iso
+[diff]
+    algorithm = histogram
+    colorMoved = plain
+    mnemonicPrefix = true
+    renames = true
+
+# Visual
+[column]
+    ui = auto
+
+# Workflow
+[apply]
+    whitespace = fix
+[rerere]
+    enabled = true
+    autoupdate = true
+[format]
+    thread = true
+[sendemail]
+    sendmailcmd = neomutt -C -H - && true
