@@ -170,6 +170,22 @@ local plugins = {
             }
         end,
     },
+    {
+        'nvim-treesitter/nvim-treesitter-context',
+        opts = function()
+            local treesitter_context = require('treesitter-context')
+            treesitter_context.setup({
+                enable = true,
+                multiwindow = true,
+                max_lines = 0,
+                trim_scope = 'inner',
+                mode = 'cursor',
+                separator = nil,
+                zindex = 20,
+                on_attach = nil,
+            })
+        end,
+    },
     -- LSP setup
     {
         'neovim/nvim-lspconfig',
