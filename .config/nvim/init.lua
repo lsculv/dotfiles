@@ -1,6 +1,24 @@
 -- Aesthetic options
-vim.opt.background = 'dark'
+vim.o.background = 'dark'
 vim.opt.termguicolors = true
+-- Theme switching function
+local function toggle_theme()
+    -- Toggle background
+    if vim.o.background == 'light' then
+        vim.o.background = 'dark'
+        vim.cmd.colorscheme('rose-pine-moon')
+    else
+        vim.o.background = 'light'
+        vim.cmd.colorscheme('rose-pine-dawn')
+    end
+
+    -- Refresh lightline
+    vim.cmd('Lazy reload lightline.vim')
+    vim.cmd('call lightline#init()')
+    vim.cmd('call lightline#colorscheme()')
+    vim.cmd('call lightline#update()')
+end
+vim.api.nvim_create_user_command('ToggleTheme', toggle_theme, {})
 
 -- Leader and remaps
 vim.g.mapleader = ' '
@@ -355,7 +373,8 @@ local plugins = {
     {
         'itchyny/lightline.vim',
         config = function()
-            vim.g.lightline = { colorscheme = 'rosepine_moon' }
+            local colorscheme = vim.o.background == 'light' and 'rosepine' or 'rosepine_moon'
+            vim.g.lightline = { colorscheme = colorscheme }
         end,
     },
 }
