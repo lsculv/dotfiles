@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+file=~/.config/ghostty/config
+current_theme=$(rg '^theme' "$file" | cut -d' ' -f3)
+if [[ "$current_theme" = 'custom' ]]; then
+    sed -i 's/^theme.*/theme = rose-pine-dawn/g' "$file"
+else
+    sed -i 's/^theme.*/theme = custom/g' "$file"
+fi
