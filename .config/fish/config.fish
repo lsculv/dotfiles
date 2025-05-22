@@ -9,6 +9,9 @@ set -x XDG_CONFIG_HOME $HOME/.config
 set -x XDG_STATE_HOME $HOME/.local/state
 set -x XDG_CACHE_HOME $HOME/.cache
 
+# `bat`
+set -x BAT_THEME base16
+
 if status is-interactive
     # Commands to run in interactive sessions can go here
     abbr -a fishcfg cd ~/.config/fish/
