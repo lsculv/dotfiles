@@ -78,8 +78,9 @@ vim.opt.showmode = false
 -- Undo options
 vim.opt.undofile = true
 
--- Signs (usually from the LSP)
+-- Signs and diagnostics
 vim.opt.signcolumn = 'yes'
+vim.diagnostic.config({ virtual_text = true })
 
 -- White space handling
 vim.opt.list = true
