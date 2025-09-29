@@ -9,6 +9,8 @@ set -x XDG_CONFIG_HOME $HOME/.config
 set -x XDG_STATE_HOME $HOME/.local/state
 set -x XDG_CACHE_HOME $HOME/.cache
 
+source $XDG_CONFIG_HOME/fish/functions/fish_prompt.fish
+
 # `bat`
 set -x BAT_THEME base16
 
