@@ -14,6 +14,9 @@ source $XDG_CONFIG_HOME/fish/functions/fish_prompt.fish
 # `bat`
 set -x BAT_THEME base16
 
+# GPG key entry via the terminal
+set -x GPG_TTY (tty)
+
 if status is-interactive
     # Commands to run in interactive sessions can go here
     abbr -a fishcfg cd ~/.config/fish/
