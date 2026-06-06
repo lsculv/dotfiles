@@ -170,18 +170,6 @@ local plugins = {
         lazy = false, -- main branch does not support lazy-loading
         build = ':TSUpdate',
         config = function()
-            -- register the custom roc parser before installing (User TSUpdate fires on :TSUpdate)
-            vim.api.nvim_create_autocmd('User', {
-                pattern = 'TSUpdate',
-                callback = function()
-                    require('nvim-treesitter.parsers').roc = {
-                        install_info = {
-                            url = 'https://github.com/faldor20/tree-sitter-roc',
-                        },
-                    }
-                end,
-            })
-
             require('nvim-treesitter').install({
                 'c',
                 'lua',
@@ -189,24 +177,8 @@ local plugins = {
                 'vimdoc',
                 'python',
                 'rust',
-                'roc',
-                'markdown', -- used to render LSP hover (CTRL+K) floats
+                'markdown',
                 'markdown_inline',
-            })
-
-            -- make .roc files have the correct filetype
-            vim.filetype.add({
-                extension = {
-                    roc = 'roc',
-                },
-            })
-
-            -- roc buffer-local options
-            vim.api.nvim_create_autocmd('FileType', {
-                pattern = 'roc',
-                callback = function()
-                    vim.bo.commentstring = '# %s'
-                end,
             })
 
             -- enable highlighting + treesitter indentation per buffer
