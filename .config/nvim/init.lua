@@ -166,38 +166,58 @@ local plugins = {
     -- Treesitter support
     {
         'nvim-treesitter/nvim-treesitter',
+        branch = 'main', -- the rewrite; required for Neovim 0.11+ (master is deprecated)
+        lazy = false, -- main branch does not support lazy-loading
         build = ':TSUpdate',
         config = function()
-            local configs = require('nvim-treesitter.configs')
-            configs.setup({
-                ensure_installed = { 'c', 'lua', 'vim', 'vimdoc', 'python', 'rust' },
-                ignore_install = {},
-                auto_install = false,
-                sync_install = false,
-                modules = {},
-                highlight = { enable = true },
-                indent = { enable = true },
-            })
-            -- make .roc files have the correct filetype
-            vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter' }, {
-                pattern = { '*.roc' },
+            -- register the custom roc parser before installing (User TSUpdate fires on :TSUpdate)
+            vim.api.nvim_create_autocmd('User', {
+                pattern = 'TSUpdate',
                 callback = function()
-                    vim.opt_local.filetype = 'roc'
-                    vim.opt_local.commentstring = '# %s'
+                    require('nvim-treesitter.parsers').roc = {
+                        install_info = {
+                            url = 'https://github.com/faldor20/tree-sitter-roc',
+                        },
+                    }
                 end,
             })
 
-            -- add roc tree-sitter
-            --@class
-            local parsers = require('nvim-treesitter.parsers').get_parser_configs()
+            require('nvim-treesitter').install({
+                'c',
+                'lua',
+                'vim',
+                'vimdoc',
+                'python',
+                'rust',
+                'roc',
+                'markdown', -- used to render LSP hover (CTRL+K) floats
+                'markdown_inline',
+            })
 
-            --@class
-            parsers.roc = {
-                install_info = {
-                    url = 'https://github.com/faldor20/tree-sitter-roc',
-                    files = { 'src/parser.c', 'src/scanner.c' },
+            -- make .roc files have the correct filetype
+            vim.filetype.add({
+                extension = {
+                    roc = 'roc',
                 },
-            }
+            })
+
+            -- roc buffer-local options
+            vim.api.nvim_create_autocmd('FileType', {
+                pattern = 'roc',
+                callback = function()
+                    vim.bo.commentstring = '# %s'
+                end,
+            })
+
+            -- enable highlighting + treesitter indentation per buffer
+            -- (on the main branch these are not enabled via setup())
+            vim.api.nvim_create_autocmd('FileType', {
+                callback = function(args)
+                    if pcall(vim.treesitter.start, args.buf) then
+                        vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                    end
+                end,
+            })
         end,
     },
     {
