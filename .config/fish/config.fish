@@ -1,5 +1,5 @@
-set -U fish_greeting
-set -Ux EDITOR /usr/bin/nvim
+set -g fish_greeting
+set -gx EDITOR /usr/bin/nvim
 
 fish_add_path -aP /home/lucas/.juliaup/bin
 
@@ -9,7 +9,10 @@ set -x XDG_CONFIG_HOME $HOME/.config
 set -x XDG_STATE_HOME $HOME/.local/state
 set -x XDG_CACHE_HOME $HOME/.cache
 
-source $XDG_CONFIG_HOME/fish/functions/fish_prompt.fish
+# Secrets (API keys) — kept out of version control; see .gitignore
+if test -f $XDG_CONFIG_HOME/fish/secrets.fish
+    source $XDG_CONFIG_HOME/fish/secrets.fish
+end
 
 # `bat`
 set -x BAT_THEME base16
@@ -22,8 +25,8 @@ if status is-interactive
     abbr -a fishcfg cd ~/.config/fish/
 
     # Common command aliases
-    alias ls='ls -lGhvX --group-directories-first --color=auto'
-    alias la='ls -lAGhvX --group-directories-first --color=auto'
+    alias ls='command ls -lGhvX --group-directories-first --color=auto'
+    alias la='command ls -lAGhvX --group-directories-first --color=auto'
     abbr -a open xdg-open
     abbr -a gs git status
     abbr -a fst head -n 1
@@ -51,7 +54,7 @@ if status is-interactive
         else
             set directory "$HOME"
         end
-        cd (fd --type d --exclude go . "$directory" | fzf --scheme path --bind tab:up,btab:down || printf "$last")
+        cd (fd --type d --exclude go . "$directory" | fzf --scheme path --bind tab:up,btab:down || printf '%s' "$last")
     end
     # Searches hidden files as well
     function fa;
@@ -61,7 +64,7 @@ if status is-interactive
         else
             set directory "$HOME"
         end
-        cd (fd --type d --exclude go . "$directory" -H | fzf --scheme=path --bind tab:up,btab:down || printf "$last")
+        cd (fd --type d --exclude go . "$directory" -H | fzf --scheme=path --bind tab:up,btab:down || printf '%s' "$last")
     end
 
     # Reboot to Windows
@@ -75,8 +78,9 @@ if status is-interactive
 
     # View markdown
     function md
-        pandoc $argv > /tmp/$argv.html
-        xdg-open /tmp/$argv.html
+        set -l out /tmp/(basename $argv[1]).html
+        pandoc $argv >$out
+        xdg-open $out
     end
 
     # Use neovim as the manpage viewer
@@ -84,7 +88,7 @@ if status is-interactive
         if test -n "$argv[1]"
             set manpage "$argv[1..]"
         else
-            echo -e 'What manual page do you want?\nFor example, try \'man man\'.' && exit 1
+            echo -e 'What manual page do you want?\nFor example, try \'man man\'.' && return 1
         end
         set manexe (which man)
         $manexe --where (string split ' ' $manpage) && nvim -MR -c "Man $manpage | only"
