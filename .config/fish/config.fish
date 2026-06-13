@@ -25,7 +25,7 @@ if status is-interactive
     abbr -a fishcfg cd ~/.config/fish/
 
     # Common command aliases
-    alias ls='command ls -lGhvX --group-directories-first --color=auto'
+    alias ls='ls -lGhvX --group-directories-first --color=auto'
     alias la='command ls -lAGhvX --group-directories-first --color=auto'
     abbr -a open xdg-open
     abbr -a gs git status
